@@ -4,7 +4,7 @@ module.exports = {
   // 括号内不出现空格
   bracketSpacing: true,
   // 行结束符号用 unix
-  endOfLine: 'lf',
+  endOfLine: 'auto',
   jsxBracketSameLine: false,
   printWidth: 100,
   // 换行方式
