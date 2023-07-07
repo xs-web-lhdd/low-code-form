@@ -87,7 +87,7 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
             <Button
               type="text"
               size="small"
-              icon={isStar ? <StarOutlined /> : <StarFilled style={{ color: 'red' }} />}
+              icon={!isStar ? <StarOutlined /> : <StarFilled style={{ color: 'red' }} />}
             >
               {isStar ? '取消标星' : '标星'}
             </Button>

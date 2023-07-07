@@ -1,7 +1,8 @@
 import React, { FC, useState } from 'react'
 // import { useSearchParams } from 'react-router-dom'
 import { useTitle } from 'ahooks'
-import Styles from './List.module.scss'
+import Styles from '../Common/Common.module.scss'
+import { Typography } from 'antd'
 import QuestionCard from '../../../components/QuestionCard'
 
 const rawQuestionList = [
@@ -39,6 +40,8 @@ const rawQuestionList = [
   },
 ]
 
+const { Title } = Typography
+
 const List: FC = () => {
   useTitle('我的问卷！')
 
@@ -52,7 +55,7 @@ const List: FC = () => {
     <>
       <div className={Styles.header}>
         <div className={Styles.left}>
-          <h3>我的问卷</h3>
+          <Title level={3}>我的问卷</Title>
         </div>
         <div className={Styles.right}>(搜索)</div>
       </div>
