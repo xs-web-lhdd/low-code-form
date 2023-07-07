@@ -11,7 +11,7 @@ type PropsType = {
 }
 
 const QuestionCard: FC<PropsType> = (props: PropsType) => {
-  const { _id, title, createdAt, answerCount, isPublished } = props
+  const { title, createdAt, answerCount, isPublished } = props
   return (
     <div className={Styles.container}>
       <div className={Styles.title}>
