@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react'
 import Styles from '../Common/Common.module.scss'
 import { Typography, Empty } from 'antd'
 import QuestionCard from '../../../components/QuestionCard'
+import ListSearch from '../../../components/ListSearch'
 
 type PropsType = {
   _id: string
@@ -50,7 +51,9 @@ const Star: FC = () => {
         <div className={Styles.left}>
           <Title level={3}>星标问卷</Title>
         </div>
-        <div className={Styles.right}>(搜索)</div>
+        <div className={Styles.right}>
+          <ListSearch />
+        </div>
       </div>
       <div className={Styles.content}>
         {/* 问卷列表 */}

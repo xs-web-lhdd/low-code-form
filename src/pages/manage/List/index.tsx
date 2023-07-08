@@ -4,6 +4,7 @@ import { useTitle } from 'ahooks'
 import Styles from '../Common/Common.module.scss'
 import { Typography } from 'antd'
 import QuestionCard from '../../../components/QuestionCard'
+import ListSearch from '../../../components/ListSearch'
 
 const rawQuestionList = [
   {
@@ -57,7 +58,9 @@ const List: FC = () => {
         <div className={Styles.left}>
           <Title level={3}>我的问卷</Title>
         </div>
-        <div className={Styles.right}>(搜索)</div>
+        <div className={Styles.right}>
+          <ListSearch />
+        </div>
       </div>
       <div className={Styles.content}>
         {/* 问卷列表 */}

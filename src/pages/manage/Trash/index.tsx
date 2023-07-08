@@ -3,6 +3,7 @@ import { useTitle } from 'ahooks'
 import Styles from '../Common/Common.module.scss'
 import { Typography, Empty, Table, Tag, Button, Space, Modal, message } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
+import ListSearch from '../../../components/ListSearch'
 
 type PropsType = {
   _id: string
@@ -112,7 +113,9 @@ const Trash: FC = () => {
         <div className={Styles.left}>
           <Title level={3}>回收站</Title>
         </div>
-        <div className={Styles.right}>(搜索)</div>
+        <div className={Styles.right}>
+          <ListSearch />
+        </div>
       </div>
       <div className={Styles.content}>
         {questionList.length === 0 && <Empty description="暂无数据" />}
