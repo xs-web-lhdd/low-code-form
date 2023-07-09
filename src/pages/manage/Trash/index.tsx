@@ -1,10 +1,11 @@
-import React, { FC, lazy, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { useTitle } from 'ahooks'
 import Styles from '../Common/Common.module.scss'
 import { Typography, Empty, Table, Tag, Button, Space, Modal, message, Spin } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../../components/ListSearch'
 import useLoadQuestionList from '../../../hooks/useLoadQuestionList'
+import ListPage from '../../../components/ListPage'
 
 const { Title } = Typography
 const { confirm } = Modal
@@ -13,7 +14,7 @@ const Trash: FC = () => {
   useTitle('回收站！')
 
   const { data = {}, loading } = useLoadQuestionList({ isDeleted: true })
-  const { list: questionList = [] } = data
+  const { list: questionList = [], total } = data
   // 记录选中的 id
   const [selectedIds, setSelectedId] = useState<string[]>([])
 
@@ -92,7 +93,9 @@ const Trash: FC = () => {
         {!loading && questionList.length === 0 && <Empty description="暂无数据" />}
         {!loading && questionList.length > 0 && TableElement}
       </div>
-      <div className={Styles.footer}>loadMore... 上划加载更多...</div>
+      <div className={Styles.footer}>
+        <ListPage total={total} />
+      </div>
     </>
   )
 }
