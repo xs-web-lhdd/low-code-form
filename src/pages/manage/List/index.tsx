@@ -13,12 +13,23 @@ const { Title } = Typography
 const List: FC = () => {
   useTitle('我的问卷！')
 
+  // 是否已经开始加载，防抖有延迟
+  const [started, setStarted] = useState(false)
   const [page, setPage] = useState(1)
   const [questionList, setQuestionList] = useState([])
   const [total, setTotal] = useState(0)
   const haveMoreData = total > questionList.length
 
   const [searchParams] = useSearchParams()
+  const keyword = searchParams.get(LIST_SEARCH_PARAM_NAME) || ''
+
+  // 当 keyword 变化时，重置信息
+  useEffect(() => {
+    setStarted(false)
+    setPage(1)
+    setQuestionList([])
+    setTotal(0)
+  }, [keyword])
 
   // * 真正加载：
   const { run: load, loading } = useRequest(
@@ -26,7 +37,7 @@ const List: FC = () => {
       const data = await getQuestionListApi({
         page,
         pageSize: LIST_PAGE_SIZE,
-        keyword: searchParams.get(LIST_SEARCH_PARAM_NAME) || '',
+        keyword,
       })
 
       return data
@@ -52,7 +63,9 @@ const List: FC = () => {
       if (domRect == null) return
       const { bottom } = domRect
       if (bottom <= document.body.clientHeight) {
+        // 真正加载数据
         load()
+        setStarted(true)
       }
     },
     { wait: 500 }
@@ -101,7 +114,7 @@ const List: FC = () => {
   // }, [])
 
   const LoadMoreContentElem = () => {
-    if (!loading) return <Spin />
+    if (!started || loading) return <Spin />
     if (total == 0) return <Empty description="暂无数据" />
     if (!haveMoreData) return <span>没有更多了...</span>
     return <span>开始加载下一页...</span>
