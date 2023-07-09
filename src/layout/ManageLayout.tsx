@@ -1,26 +1,35 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Button, Space, Divider, message } from 'antd'
 import { PlusOutlined, BarsOutlined, StarOutlined, DeleteOutlined } from '@ant-design/icons'
+import { useRequest } from 'ahooks'
 import Styles from './ManageLayout.module.scss'
 import { createQuestionApi } from '../services/question'
 
 const ManageLayout: FC = () => {
   const nav = useNavigate()
   const { pathname } = useLocation()
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
 
-  async function createQuestion() {
-    setLoading(true)
-    const data = await createQuestionApi()
-    const { id } = data || {}
-    if (id) {
+  // async function createQuestion() {
+  //   setLoading(true)
+  //   const data = await createQuestionApi()
+  //   const { id } = data || {}
+  //   if (id) {
+  //     nav(`/question/edit/${id}`)
+  //     message.success('创建成功')
+  //   }
+
+  //   setLoading(false)
+  // }
+
+  const { loading, run: createQuestion } = useRequest(createQuestionApi, {
+    manual: true,
+    onSuccess({ id }) {
       nav(`/question/edit/${id}`)
       message.success('创建成功')
-    }
-
-    setLoading(false)
-  }
+    },
+  })
 
   return (
     <div className={Styles.container}>
