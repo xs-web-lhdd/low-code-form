@@ -14,3 +14,10 @@ export async function createQuestionApi(): Promise<ResDataType> {
   const data = (await instance.post(url)) as ResDataType
   return data
 }
+
+// 获取问卷列表
+export async function getQuestionListApi(): Promise<ResDataType> {
+  const url = '/question'
+  const data = (await instance.get(url)) as ResDataType
+  return data
+}

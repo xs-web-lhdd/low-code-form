@@ -1,45 +1,11 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 // import { useSearchParams } from 'react-router-dom'
-import { useTitle } from 'ahooks'
+import { useTitle, useRequest } from 'ahooks'
 import Styles from '../Common/Common.module.scss'
-import { Typography } from 'antd'
+import { Typography, Spin } from 'antd'
 import QuestionCard from '../../../components/QuestionCard'
 import ListSearch from '../../../components/ListSearch'
-
-const rawQuestionList = [
-  {
-    _id: 'q1',
-    title: '问卷1',
-    isPublished: false,
-    isStar: false,
-    answerCount: 5,
-    createdAt: '3月10日 13:23',
-  },
-  {
-    _id: 'q2',
-    title: '问卷2',
-    isPublished: true,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '3月10日 13:23',
-  },
-  {
-    _id: 'q3',
-    title: '问卷3',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '3月10日 13:23',
-  },
-  {
-    _id: 'q4',
-    title: '问卷4',
-    isPublished: true,
-    isStar: false,
-    answerCount: 5,
-    createdAt: '3月10日 13:23',
-  },
-]
+import { getQuestionListApi } from '../../../services/question'
 
 const { Title } = Typography
 
@@ -50,7 +16,25 @@ const List: FC = () => {
   // console.log('keyword', searchParams.get('keyword'))
   // console.log('age', searchParams.get('age'))
 
-  const [questionList] = useState(rawQuestionList)
+  // * 使用 useRequest 这个 hook 的写法：
+  const { data = {}, loading } = useRequest(getQuestionListApi)
+  const { list: questionList = [] } = data
+
+  // * 常规写法：
+  // const [questionList, setQuestionList] = useState([])
+  // const [total, setTotal] = useState(0)
+
+  // async function getQuestionList() {
+  //   const data = await getQuestionListApi()
+  //   const { list = [], total = 0 } = data
+  //   setQuestionList(list)
+  //   setTotal(total)
+  //   return data
+  // }
+
+  // useEffect(() => {
+  //   getQuestionList()
+  // }, [])
 
   return (
     <>
@@ -63,9 +47,16 @@ const List: FC = () => {
         </div>
       </div>
       <div className={Styles.content}>
-        {/* 问卷列表 */}
-        {questionList.length > 0 &&
-          questionList.map(i => {
+        {/* 是loading 是加载 loading 动画 */}
+        {loading && (
+          <div style={{ textAlign: 'center' }}>
+            <Spin size="large" />
+          </div>
+        )}
+        {/* 不是 loading 时并且问卷列表长度大于 0 时，加载 问卷列表 */}
+        {!loading &&
+          questionList.length > 0 &&
+          questionList.map((i: any) => {
             const { _id } = i
             return <QuestionCard key={_id} {...i}></QuestionCard>
           })}
