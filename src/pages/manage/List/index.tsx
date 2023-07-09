@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
 // import { useSearchParams } from 'react-router-dom'
-import { useTitle, useRequest } from 'ahooks'
+import { useTitle } from 'ahooks'
 import Styles from '../Common/Common.module.scss'
 import { Typography, Spin } from 'antd'
 import QuestionCard from '../../../components/QuestionCard'
 import ListSearch from '../../../components/ListSearch'
-import { getQuestionListApi } from '../../../services/question'
+import useLoadQuestionList from '../../../hooks/useLoadQuestionList'
 
 const { Title } = Typography
 
@@ -16,11 +16,15 @@ const List: FC = () => {
   // console.log('keyword', searchParams.get('keyword'))
   // console.log('age', searchParams.get('age'))
 
-  // * 使用 useRequest 这个 hook 的写法：
-  const { data = {}, loading } = useRequest(getQuestionListApi)
+  // * 版本三： 使用 useLoadQuestionList 自定义钩子的写法：
+  const { data = {}, loading } = useLoadQuestionList()
   const { list: questionList = [] } = data
 
-  // * 常规写法：
+  // *版本二： 使用 useRequest 这个 hook 的写法：
+  // const { data = {}, loading } = useRequest(getQuestionListApi)
+  // const { list: questionList = [] } = data
+
+  // *版本一： 常规写法：
   // const [questionList, setQuestionList] = useState([])
   // const [total, setTotal] = useState(0)
 

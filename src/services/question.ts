@@ -1,6 +1,10 @@
 import instance from './ajax'
 import type { ResDataType } from './ajax'
 
+type SearchOption = {
+  keyword: string
+}
+
 // 获取单个问卷信息
 export async function getQuestionInfoApi(id: string): Promise<ResDataType> {
   const url = `/question/${id}`
@@ -16,8 +20,8 @@ export async function createQuestionApi(): Promise<ResDataType> {
 }
 
 // 获取问卷列表
-export async function getQuestionListApi(): Promise<ResDataType> {
+export async function getQuestionListApi(params: Partial<SearchOption> = {}): Promise<ResDataType> {
   const url = '/question'
-  const data = (await instance.get(url)) as ResDataType
+  const data = (await instance.get(url, { params })) as ResDataType
   return data
 }
