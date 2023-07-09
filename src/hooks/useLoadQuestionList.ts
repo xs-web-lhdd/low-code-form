@@ -3,13 +3,19 @@ import { useRequest } from 'ahooks'
 import { getQuestionListApi } from '../services/question'
 import { LIST_SEARCH_PARAM_NAME } from '../constant'
 
-function useLoadQuestionList() {
+type OptionType = {
+  isStar?: boolean
+  isDeleted?: boolean
+}
+
+function useLoadQuestionList(option: OptionType = {}) {
+  const { isStar = false, isDeleted = false } = option
   const [searchParams] = useSearchParams()
 
   const { data, loading, error } = useRequest(
     async () => {
       const keyword = searchParams.get(LIST_SEARCH_PARAM_NAME) || ''
-      const data = await getQuestionListApi({ keyword })
+      const data = await getQuestionListApi({ keyword, isStar, isDeleted })
       return data
     },
     {

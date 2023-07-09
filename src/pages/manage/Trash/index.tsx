@@ -1,45 +1,10 @@
-import React, { FC, useState } from 'react'
+import React, { FC, lazy, useState } from 'react'
 import { useTitle } from 'ahooks'
 import Styles from '../Common/Common.module.scss'
-import { Typography, Empty, Table, Tag, Button, Space, Modal, message } from 'antd'
+import { Typography, Empty, Table, Tag, Button, Space, Modal, message, Spin } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../../components/ListSearch'
-
-type PropsType = {
-  _id: string
-  title: string
-  isStar: boolean
-  isPublished: boolean
-  answerCount: number
-  createdAt: string
-}
-
-const rawQuestionList: Array<PropsType> = [
-  {
-    _id: 'q1',
-    title: '问卷1',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '3月10日 13:23',
-  },
-  {
-    _id: 'q2',
-    title: '问卷2',
-    isPublished: true,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '3月10日 13:23',
-  },
-  {
-    _id: 'q3',
-    title: '问卷3',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '3月10日 13:23',
-  },
-]
+import useLoadQuestionList from '../../../hooks/useLoadQuestionList'
 
 const { Title } = Typography
 const { confirm } = Modal
@@ -47,7 +12,8 @@ const { confirm } = Modal
 const Trash: FC = () => {
   useTitle('回收站！')
 
-  const [questionList] = useState(rawQuestionList)
+  const { data = {}, loading } = useLoadQuestionList({ isDeleted: true })
+  const { list: questionList = [] } = data
   // 记录选中的 id
   const [selectedIds, setSelectedId] = useState<string[]>([])
 
@@ -118,8 +84,13 @@ const Trash: FC = () => {
         </div>
       </div>
       <div className={Styles.content}>
-        {questionList.length === 0 && <Empty description="暂无数据" />}
-        {questionList.length > 0 && TableElement}
+        {loading && (
+          <div style={{ textAlign: 'center' }}>
+            <Spin size="large" />
+          </div>
+        )}
+        {!loading && questionList.length === 0 && <Empty description="暂无数据" />}
+        {!loading && questionList.length > 0 && TableElement}
       </div>
       <div className={Styles.footer}>loadMore... 上划加载更多...</div>
     </>
