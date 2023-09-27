@@ -39,3 +39,10 @@ export async function updateQuestionApi(
   const data = (await instance.post(url, opt)) as ResDataType
   return data
 }
+
+// 复制问卷
+export async function duplicateQuestionApi(id: string): Promise<ResDataType> {
+  const url = `/question/duplicate/${id}`
+  const data = (await instance.post(url)) as ResDataType
+  return data
+}

@@ -13,7 +13,7 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons'
 import { useRequest } from 'ahooks'
-import { updateQuestionApi } from '../services/question'
+import { duplicateQuestionApi, updateQuestionApi } from '../services/question'
 
 type PropsType = {
   _id: string
@@ -32,7 +32,7 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
 
   // 修改标星
   const [isStarState, setIsStarState] = useState(isStar)
-  const { run: upDateQuestion } = useRequest(
+  const { loading: changeStarLoading, run: changeStar } = useRequest(
     async () => {
       await updateQuestionApi(_id, { isStar: !isStarState })
     },
@@ -45,17 +45,44 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
     }
   )
 
-  function duplicate() {
-    message.success('执行复制')
-  }
+  // 复制操作
+  const { loading: duplicateLoading, run: duplicate } = useRequest(
+    async () => {
+      const res = await duplicateQuestionApi(_id)
+      return res
+    },
+    {
+      manual: true,
+      onSuccess(result) {
+        message.success('复制成功！')
+        nav(`/question/duplicate/${result.id}`)
+      },
+    }
+  )
 
+  // 删除操作
+  const [isDeletedState, setDeletedState] = useState(false)
+  const { loading: deleteLoading, run: deleteQuestion } = useRequest(
+    async () => {
+      await updateQuestionApi(_id, { isDeleted: true })
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success('删除成功！')
+        setDeletedState(true)
+      },
+    }
+  )
   function del() {
     confirm({
       title: '确定删除该问卷？',
       icon: <ExclamationCircleOutlined />,
-      onOk: () => message.success('删除'),
+      onOk: deleteQuestion,
     })
   }
+
+  if (isDeletedState) return null
 
   return (
     <div className={Styles.container}>
@@ -105,7 +132,8 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
               type="text"
               size="small"
               icon={!isStarState ? <StarOutlined /> : <StarFilled style={{ color: 'red' }} />}
-              onClick={upDateQuestion}
+              onClick={changeStar}
+              disabled={changeStarLoading}
             >
               {isStarState ? '取消标星' : '标星'}
             </Button>
@@ -115,11 +143,17 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
               cancelText="取消"
               onConfirm={duplicate}
             >
-              <Button type="text" size="small" icon={<CopyOutlined />}>
+              <Button type="text" size="small" icon={<CopyOutlined />} disabled={duplicateLoading}>
                 复制
               </Button>
             </Popconfirm>
-            <Button type="text" size="small" icon={<DeleteOutlined />} onClick={del}>
+            <Button
+              type="text"
+              size="small"
+              icon={<DeleteOutlined />}
+              onClick={del}
+              disabled={deleteLoading}
+            >
               删除
             </Button>
           </Space>
