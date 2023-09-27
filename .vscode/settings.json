@@ -2,13 +2,17 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "eslint.format.enable": false,
+  "eslint.format.enable": true,
   "cSpell.words": [
     "ahooks",
     "antd",
+    "classname",
     "commitlint",
     "craco",
+    "fastmock",
     "immer",
+    "mockjs",
+    "Parens",
     "Popconfirm"
   ]
 }

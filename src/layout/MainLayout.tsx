@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+// Outlet 就相当于 Vue 中的 slot
 import { Outlet } from 'react-router-dom'
 import { Layout } from 'antd'
 import Styles from './MainLayout.module.scss'

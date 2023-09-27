@@ -46,7 +46,7 @@ const List: FC = () => {
       manual: true,
       onSuccess({ list = [], total = 0 }) {
         // 累计：
-        setQuestionList(list.concat(list))
+        setQuestionList(questionList.concat(list))
         setTotal(total)
         setPage(page + 1)
       },
@@ -59,6 +59,7 @@ const List: FC = () => {
     () => {
       const elem = containerRef.current
       if (elem == null) return
+      // getBoundingClientRect 返回元素的大小及其相对于视口的位置
       const domRect = elem.getBoundingClientRect()
       if (domRect == null) return
       const { bottom } = domRect
@@ -132,9 +133,10 @@ const List: FC = () => {
       <div className={Styles.content}>
         {/* 问卷列表 */}
         {questionList.length > 0 &&
-          questionList.map((i: any) => {
-            const { _id } = i
-            return <QuestionCard key={_id} {...i}></QuestionCard>
+          questionList.map((i: any, index: number) => {
+            // const { _id } = i
+            // console.log(_id)
+            return <QuestionCard key={index} {...i}></QuestionCard>
           })}
       </div>
       <div className={Styles.footer}>

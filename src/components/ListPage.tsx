@@ -21,6 +21,7 @@ const ListPage: FC<PropsType> = (props: PropsType) => {
   const nav = useNavigate()
   const { pathname } = useLocation()
 
+  // 从 url 中找到 page 和 pageSize, 并且同步到 Pagination 中
   useEffect(() => {
     const page = parseInt(searchParams.get(LIST_PAGE_PARAM_KEY) as string) || LIST_PAGE
     const pageSize =

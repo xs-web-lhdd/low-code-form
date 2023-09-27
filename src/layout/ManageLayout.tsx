@@ -24,6 +24,7 @@ const ManageLayout: FC = () => {
   // }
 
   const { loading, run: createQuestion } = useRequest(createQuestionApi, {
+    // 手动触发
     manual: true,
     onSuccess({ id }) {
       nav(`/question/edit/${id}`)

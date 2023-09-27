@@ -29,3 +29,13 @@ export async function getQuestionListApi(params: Partial<SearchOption> = {}): Pr
   const data = (await instance.get(url, { params })) as ResDataType
   return data
 }
+
+// 更新单个问卷
+export async function updateQuestionApi(
+  id: string,
+  opt: { [key: string]: any }
+): Promise<ResDataType> {
+  const url = `/question/${id}`
+  const data = (await instance.post(url, opt)) as ResDataType
+  return data
+}
