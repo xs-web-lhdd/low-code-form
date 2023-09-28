@@ -435,3 +435,90 @@ console.log(searchParams.get('keyword'))
 1. 搜索输入框和列表不要有直接的联系，而是通过改变 url 参数，然后 url 参数改变带动列表变化
 2. 分页组件，与 url 参数关联在一块，url 参数改变从而带动列表发生变化
 3. 上滑加载更多就不能改变分页这种形式
+
+# 状态相关
++ Context+
+
+## Context
++ 可跨层级传递,而不像 props 层层传递
++ 类似 Vue 的 provide/inject
+```tsx
+// 祖先组件
+const value = {}
+const ThemeContext = createContext()
+const Demo = () => {
+  return (
+    <context.Provider value={value}>
+    </context.Provider>
+  )
+}
+```
+```tsx
+// 子孙组件
+import { FC, useContext } from 'react'
+import { ThemeContext } from '祖先组件'
+
+const ThemeBtn: FC = () => {
+  const theme = useContext(ThemeContext)
+  return (
+    <>
+      <button>xxx</button>
+    </>
+  )
+}
+```
+
+## useReducer
++ useState 的代替方案
++ 数据结构简单时用 useState,复杂时用的 useReducer
++ 简化版的 redux
+
+```tsx
+// 使用 useState 版
+import React, { FC, useState } from 'react'
+
+const CountReducer: FC = () => {
+  const [count, setCount] = useState(0)
+
+  return (
+    <>
+      <span>count: {count}</span>
+      <button onClick={() => setCount(count + 1)}></button>
+      <button onClick={() => setCount(count - 1)}></button>
+    </>
+  )
+}
+```
+
+```tsx
+// 使用 useReducer 版
+import React, { FC, useReducer } from 'react'
+
+type StateType = { count: number }
+type ActionType = { type: string }
+
+const initialState: StateType = { count: 100 }
+// 根据传入的 action 返回新的 state(不可变数据)
+function reducer(state: StateType, action: ActionType) {
+  switch action.type {
+    case 'increment':
+      return { count: state.count + 1 }
+    case 'decrement':
+      return { count: state.count - 1 }
+    default:
+      throw new Error()
+  }
+}
+
+const CountReducer: FC = () => {
+  const [state, dispatch] = useReducer(reducer, initialState)
+
+  return (
+    <>
+      <span>count: {state.count}</span>
+      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+    </>
+  )
+}
+```

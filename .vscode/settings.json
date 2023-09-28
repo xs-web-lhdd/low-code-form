@@ -12,7 +12,9 @@
     "fastmock",
     "immer",
     "mockjs",
+    "Navpage",
     "Parens",
-    "Popconfirm"
+    "Popconfirm",
+    "reduxjs"
   ]
 }
