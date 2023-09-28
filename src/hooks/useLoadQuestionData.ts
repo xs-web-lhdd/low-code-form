@@ -26,8 +26,13 @@ function useLoadQuestionData() {
   useEffect(() => {
     if (!data) return
     const { title = '', componentList = [] } = data
+    // 默认第一个组件被选中作为 selectedId
+    let selectedId = ''
+    if (componentList.length > 0) {
+      selectedId = componentList[0].fe_id
+    }
     // 把 componentList 存储在 Store 中
-    dispatch(resetComponents({ componentList }))
+    dispatch(resetComponents({ componentList, selectedId }))
   }, [data])
 
   useEffect(() => {
