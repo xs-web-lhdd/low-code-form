@@ -6,6 +6,8 @@ import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../../components/ListSearch'
 import useLoadQuestionList from '../../../hooks/useLoadQuestionList'
 import ListPage from '../../../components/ListPage'
+import { deleteQuestionApi, updateQuestionApi } from '../../../services/question'
+import { useRequest } from 'ahooks'
 
 const { Title } = Typography
 const { confirm } = Modal
@@ -13,10 +15,40 @@ const { confirm } = Modal
 const Trash: FC = () => {
   useTitle('回收站！')
 
-  const { data = {}, loading } = useLoadQuestionList({ isDeleted: true })
+  const { data = {}, loading, refresh } = useLoadQuestionList({ isDeleted: true })
   const { list: questionList = [], total } = data
   // 记录选中的 id
   const [selectedIds, setSelectedId] = useState<string[]>([])
+
+  // 恢复
+  const { run: recover } = useRequest(
+    async () => {
+      for await (const id of selectedIds) {
+        await updateQuestionApi(id, { isDeleted: false })
+      }
+    },
+    {
+      manual: true,
+      // 防抖
+      debounceWait: 500,
+      onSuccess() {
+        message.success('恢复成功!')
+        // 手动刷新列表
+        refresh()
+        setSelectedId([])
+      },
+    }
+  )
+
+  // 彻底删除
+  const { run: deleteQuestion } = useRequest(async () => await deleteQuestionApi(selectedIds), {
+    manual: true,
+    onSuccess() {
+      message.success('删除成功')
+      refresh()
+      setSelectedId([])
+    },
+  })
 
   const tableColumns = [
     {
@@ -43,7 +75,7 @@ const Trash: FC = () => {
       title: '确定彻底删除该问卷？',
       icon: <ExclamationCircleOutlined />,
       content: '删除之后不可以找回',
-      onOk: () => message.success(`删除 ${JSON.stringify(selectedIds)}`),
+      onOk: deleteQuestion,
     })
   }
 
@@ -51,7 +83,7 @@ const Trash: FC = () => {
     <>
       <div style={{ margin: '12px ' }}>
         <Space>
-          <Button type="primary" disabled={selectedIds.length === 0}>
+          <Button type="primary" disabled={selectedIds.length === 0} onClick={recover}>
             恢复
           </Button>
           <Button danger disabled={selectedIds.length === 0} onClick={del}>

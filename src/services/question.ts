@@ -46,3 +46,10 @@ export async function duplicateQuestionApi(id: string): Promise<ResDataType> {
   const data = (await instance.post(url)) as ResDataType
   return data
 }
+
+// 批量彻底删除
+export async function deleteQuestionApi(ids: string[]): Promise<ResDataType> {
+  const url = '/question/delete'
+  const data = (await instance.post(url, { ids })) as ResDataType
+  return data
+}
