@@ -1,9 +1,12 @@
 import React, { FC, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Styles from './Login.module.scss'
-import { Typography, Space, Form, Input, Button, Checkbox } from 'antd'
+import { Typography, Space, Form, Input, Button, Checkbox, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
-import { REGISTER_PATHNAME } from '../router'
+import { REGISTER_PATHNAME, MANAGE_INDEX_PATHNAME } from '../router'
+import { loginApi } from '../services/user'
+import { useRequest } from 'ahooks'
+import { setToken } from '../utils/user-token'
 
 type FormType = {
   username: string
@@ -32,6 +35,20 @@ function getUserInfoFormStorage() {
 const { Title } = Typography
 
 const Login: FC = () => {
+  const nav = useNavigate()
+  const { run: login } = useRequest(
+    async (username, password) => await loginApi(username, password),
+    {
+      manual: true,
+      onSuccess(result) {
+        // 获取 token 进行存储
+        const { token = '' } = result
+        setToken(token)
+        message.success('登陆成功!')
+        nav(MANAGE_INDEX_PATHNAME)
+      },
+    }
+  )
   const [form] = Form.useForm()
   useEffect(() => {
     const { username, password } = getUserInfoFormStorage()
@@ -39,11 +56,14 @@ const Login: FC = () => {
   }, [])
 
   const onFinish = (values: FormType) => {
-    if (values.remember) {
-      rememberUser(values.username, values.password)
+    const { username, password, remember } = values
+    if (remember) {
+      rememberUser(username, password)
     } else {
       deleteUserFormStorage()
     }
+    // 进行登陆请求
+    login(username, password)
   }
 
   return (
