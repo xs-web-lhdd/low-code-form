@@ -8,14 +8,17 @@
     "antd",
     "Appstore",
     "classname",
+    "clonedeep",
     "commitlint",
     "craco",
+    "downarrow",
     "fastmock",
     "immer",
     "mockjs",
     "Navpage",
     "Parens",
     "Popconfirm",
-    "reduxjs"
+    "reduxjs",
+    "uparrow"
   ]
 }
