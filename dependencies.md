@@ -114,3 +114,6 @@ module.exports = {
 ## Redux
 ### 介绍
 + 使用 redux 进行状态管理, Mbox 也是状态管理
+
+## nanoid
++ 生成一个不重复的 id

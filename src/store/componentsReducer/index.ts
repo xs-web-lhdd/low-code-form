@@ -31,9 +31,25 @@ export const componentsSlice = createSlice({
     changeSelectedId: produce((draft: ComponentsStateType, action: PayloadAction<string>) => {
       draft.selectedId = action.payload
     }),
+    // 添加新组件
+    addComponent: produce(
+      (draft: ComponentsStateType, action: PayloadAction<ComponentInfoType>) => {
+        const newComponent = action.payload
+        const { selectedId, componentList } = draft
+        const index = componentList.findIndex(c => c.fe_id === selectedId)
+        if (index < 0) {
+          // 未选中组件，直接插入到最后面
+          componentList.push(newComponent)
+        } else {
+          // 选中组件，插入选中组件的后边
+          componentList.splice(index + 1, 0, newComponent)
+        }
+        draft.selectedId = newComponent.fe_id
+      }
+    ),
   },
 })
 
-export const { resetComponents, changeSelectedId } = componentsSlice.actions
+export const { resetComponents, changeSelectedId, addComponent } = componentsSlice.actions
 
 export default componentsSlice.reducer
