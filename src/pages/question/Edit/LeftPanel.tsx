@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Tabs } from 'antd'
 import { AppstoreAddOutlined, BarsOutlined } from '@ant-design/icons'
-import Lib from './ComponentLib'
+import ComponentLib from './ComponentLib'
 
 const LeftPanel: FC = () => {
   const tableItems = [
@@ -13,7 +13,7 @@ const LeftPanel: FC = () => {
           组件库
         </span>
       ),
-      children: <Lib />,
+      children: <ComponentLib />,
     },
     {
       key: 'layers',
