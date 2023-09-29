@@ -42,24 +42,28 @@ const EditCanvas: FC<PropsType> = ({ loading }: PropsType) => {
     )
   return (
     <div className={Style.canvas}>
-      {componentList.map(c => {
-        const { fe_id } = c
-        const wrapperDefaultClassName = Style['component-wrapper']
-        const selectedClassName = Style.selected
-        const wrapperClassName = classNames({
-          [wrapperDefaultClassName]: true,
-          [selectedClassName]: selectedId == fe_id,
-        })
-        return (
-          <div
-            key={fe_id}
-            className={wrapperClassName}
-            onClick={event => handleClick(event, fe_id)}
-          >
-            <div className={Style.component}>{genComponent(c)}</div>
-          </div>
-        )
-      })}
+      {componentList
+        .filter(c => !c.isHidden)
+        .map(c => {
+          const { fe_id, isLocked } = c
+          const wrapperDefaultClassName = Style['component-wrapper']
+          const selectedClassName = Style.selected
+          const lockedClassName = Style.locked
+          const wrapperClassName = classNames({
+            [wrapperDefaultClassName]: true,
+            [selectedClassName]: selectedId == fe_id,
+            [lockedClassName]: isLocked,
+          })
+          return (
+            <div
+              key={fe_id}
+              className={wrapperClassName}
+              onClick={event => handleClick(event, fe_id)}
+            >
+              <div className={Style.component}>{genComponent(c)}</div>
+            </div>
+          )
+        })}
       {/* <div className={Style['component-wrapper']}>
         <div className={Style.component}>
           <QuestionTitle></QuestionTitle>
