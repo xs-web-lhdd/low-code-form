@@ -26,7 +26,14 @@ function useLoadQuestionData() {
   // 根据 data 设置 redux store
   useEffect(() => {
     if (!data) return
-    const { title = '', desc = '', js = '', css = '', componentList = [] } = data
+    const {
+      title = '',
+      desc = '',
+      js = '',
+      css = '',
+      isPublished = false,
+      componentList = [],
+    } = data
     // 默认第一个组件被选中作为 selectedId
     let selectedId = ''
     if (componentList.length > 0) {
@@ -35,7 +42,7 @@ function useLoadQuestionData() {
     // 把 componentList 存储在 Store 中
     dispatch(resetComponents({ componentList, selectedId, copiedComponent: null }))
     // 把 pageInfo 存储在 redux Store 中
-    dispatch(resetPageInfo({ title, desc, js, css }))
+    dispatch(resetPageInfo({ title, desc, js, css, isPublished }))
   }, [data])
 
   useEffect(() => {

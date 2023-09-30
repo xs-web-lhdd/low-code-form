@@ -137,3 +137,6 @@ module.exports = {
 + github star 不是非常多 6k,代码更新及时
 + npm 周下载量 48 万
 + 文档和 Demo 比较好理解
+
+## qrcode.react
++ 二维码
