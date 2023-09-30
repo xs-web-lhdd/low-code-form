@@ -4,6 +4,7 @@ import { getQuestionInfoApi } from '../services/question'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { resetComponents } from '../store/componentsReducer'
+import { resetPageInfo } from '../store/pageInfoReducer'
 
 function useLoadQuestionData() {
   // 解析获取动态路由中的 id
@@ -25,7 +26,7 @@ function useLoadQuestionData() {
   // 根据 data 设置 redux store
   useEffect(() => {
     if (!data) return
-    const { title = '', componentList = [] } = data
+    const { title = '', desc = '', js = '', css = '', componentList = [] } = data
     // 默认第一个组件被选中作为 selectedId
     let selectedId = ''
     if (componentList.length > 0) {
@@ -33,6 +34,8 @@ function useLoadQuestionData() {
     }
     // 把 componentList 存储在 Store 中
     dispatch(resetComponents({ componentList, selectedId, copiedComponent: null }))
+    // 把 pageInfo 存储在 redux Store 中
+    dispatch(resetPageInfo({ title, desc, js, css }))
   }, [data])
 
   useEffect(() => {
