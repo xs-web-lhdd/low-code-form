@@ -117,3 +117,23 @@ module.exports = {
 
 ## nanoid
 + 生成一个不重复的 id
+
+## 拖拽库选择
+### React-dnd
++ github star 多,代码更新及时
++ npm 下载量大
++ 文档已读,demo 较复杂
+
+### React-beautiful-dnd
++ github star 多,代码更新不及时
++ npm 下载量大(但提示暂无精力维护)
++ demo 好理解(但不支持 React18 严格模式)
+
+### Sortable.js
++ 老牌拖拽排序 lib,不依赖于 React 和 Vue
++ 官方提供了 React 版本,但提示不建议用于生产环境
+
+### Dnd-kit
++ github star 不是非常多 6k,代码更新及时
++ npm 周下载量 48 万
++ 文档和 Demo 比较好理解

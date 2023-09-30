@@ -526,3 +526,8 @@ const CountReducer: FC = () => {
   )
 }
 ```
+
+# 选择第三方插件的依据
++ 看 github star 和 npm 下载量
++ 看 github 代码更新,和 npm 发布频率
++ 看文档和 demo 是否通俗易懂
