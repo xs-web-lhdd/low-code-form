@@ -74,9 +74,9 @@ export const componentsSlice = createSlice({
     }),
     // 隐藏/显示 组件
     changeComponentHidden: produce(
-      (draft: ComponentsStateType, action: PayloadAction<{ isHidden: boolean }>) => {
-        const { componentList = [], selectedId: hiddenId } = draft
-        const { isHidden } = action.payload
+      (draft: ComponentsStateType, action: PayloadAction<{ fe_id: string; isHidden: boolean }>) => {
+        const { componentList = [] } = draft
+        const { isHidden, fe_id: hiddenId } = action.payload
 
         if (!hiddenId) {
           console.log('请选中组建后再隐藏')
@@ -147,6 +147,16 @@ export const componentsSlice = createSlice({
 
       draft.selectedId = componentList[selectedIndex + 1].fe_id
     }),
+    // 修改组件标题
+    changeComponentTitle: produce(
+      (draft: ComponentsStateType, action: PayloadAction<{ fe_id: string; title: string }>) => {
+        const { componentList } = draft
+        const { title, fe_id } = action.payload
+
+        const curComp = componentList.find(c => c.fe_id === fe_id)
+        if (curComp) curComp.title = title
+      }
+    ),
   },
 })
 
@@ -162,6 +172,7 @@ export const {
   pasteCopiedComponent,
   selectPrevComponent,
   selectNextComponent,
+  changeComponentTitle,
 } = componentsSlice.actions
 
 export default componentsSlice.reducer

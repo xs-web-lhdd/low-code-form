@@ -28,7 +28,7 @@ const EditToolbar: FC = () => {
 
   // 隐藏组件
   function handleHidden() {
-    dispatch(changeComponentHidden({ isHidden: true }))
+    dispatch(changeComponentHidden({ fe_id: selectedId, isHidden: true }))
   }
   // 锁定组件
   function handleLock() {
