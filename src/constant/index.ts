@@ -12,3 +12,5 @@ export const LIST_PAGE = 1
 export const LIST_PAGE_PARAM_KEY = 'page'
 
 export const LIST_PAGE_SIZE_PARAM_KEY = 'pageSize'
+// 统计页默认一页请求十条数据
+export const STAT_PAGE_SIZE = 10

@@ -14,24 +14,24 @@ const StatHeader: FC = () => {
   const { id } = useParams()
   const { title, isPublished } = useGetPageInfo()
 
+  // 拷贝链接
+  const urlInputRef = useRef<InputRef>(null)
+  function copy() {
+    const elem = urlInputRef.current
+    if (elem == null) return
+    // 选中 input 的内容
+    elem.select()
+    // 拷贝选中内容
+    document.execCommand('copy')
+    elem.blur()
+    message.success('拷贝成功!')
+  }
+
   function genLinkAndQRCodeElem() {
     if (!isPublished) return null
 
     // 拼接 url 要参考 C 端的规则
     const url = `http://localhost:3000/question/${id}`
-
-    // 拷贝链接
-    const urlInputRef = useRef<InputRef>(null)
-    function copy() {
-      const elem = urlInputRef.current
-      if (elem == null) return
-      // 选中 input 的内容
-      elem.select()
-      // 拷贝选中内容
-      document.execCommand('copy')
-      elem.blur()
-      message.success('拷贝成功!')
-    }
 
     // 定义二维码组件
     const QRCodeElem = (
