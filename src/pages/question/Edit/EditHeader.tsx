@@ -1,12 +1,15 @@
-import React, { ChangeEvent, FC, useState } from 'react'
+import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import Style from './EditHeader.module.scss'
-import { Button, Typography, Space, Input } from 'antd'
-import { EditOutlined, LeftOutlined } from '@ant-design/icons'
-import { useNavigate } from 'react-router-dom'
+import { Button, Typography, Space, Input, message } from 'antd'
+import { EditOutlined, LeftOutlined, LoadingOutlined } from '@ant-design/icons'
+import { useNavigate, useParams } from 'react-router-dom'
 import EditToolbar from './EditToolbar'
 import useGetPageInfo from '../../../hooks/useGetPageInfo'
+import useGetComponentInfo from '../../../hooks/useGetComponentInfo'
 import { useDispatch } from 'react-redux'
 import { changePageTitle } from '../../../store/pageInfoReducer'
+import { updateQuestionApi } from '../../../services/question'
+import { useDebounceEffect, useKeyPress, useRequest } from 'ahooks'
 
 const { Title } = Typography
 
@@ -40,6 +43,85 @@ const TitleElem: FC = () => {
   )
 }
 
+// 保存
+const SaveButton: FC = () => {
+  // 保存 PageInfo 和 componentList 的信息
+  const { componentList = [] } = useGetComponentInfo()
+  const pageInfo = useGetPageInfo()
+  // 获取问卷 id
+  const { id } = useParams()
+
+  // 快捷键
+  useKeyPress(['ctrl.s', 'meta.c'], (event: KeyboardEvent) => {
+    // 组织默认行为,防止网页的保存
+    event.preventDefault()
+    if (!loading) save()
+  })
+
+  const { loading, run: save } = useRequest(
+    async () => {
+      if (!id) return
+      await updateQuestionApi(id, { ...pageInfo, componentList })
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success('保存成功!')
+      },
+    }
+  )
+
+  // TODO: 每隔 1s 保存,有 bug
+  // 自动保存(不是定期保存,不是定时器,增加防抖)
+  // useDebounceEffect(
+  //   () => {
+  //     save()
+  //     console.log('保存', componentList)
+  //   },
+  //   [componentList, pageInfo],
+  //   {
+  //     wait: 1000,
+  //   }
+  // )
+  return (
+    <Button onClick={save} disabled={loading} icon={loading ? <LoadingOutlined /> : null}>
+      保存
+    </Button>
+  )
+}
+
+const PublishButton: FC = () => {
+  // 获取问卷 id PageInfo 和 componentList 的信息
+  const { id } = useParams()
+  const { componentList = [] } = useGetComponentInfo()
+  const pageInfo = useGetPageInfo()
+  const nav = useNavigate()
+  const { loading, run: pub } = useRequest(
+    async () => {
+      if (!id) return
+      await updateQuestionApi(id, { ...pageInfo, componentList, isPublished: true })
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success('发布成功!')
+        nav('/question/stat/' + id)
+      },
+    }
+  )
+
+  return (
+    <Button
+      type="primary"
+      onClick={pub}
+      disabled={loading}
+      icon={loading ? <LoadingOutlined /> : null}
+    >
+      发布
+    </Button>
+  )
+}
+
 const EditHeader: FC = () => {
   const nav = useNavigate()
   return (
@@ -58,8 +140,8 @@ const EditHeader: FC = () => {
         </div>
         <div className={Style.right}>
           <Space>
-            <Button>保存</Button>
-            <Button type="primary">发布</Button>
+            <SaveButton />
+            <PublishButton />
           </Space>
         </div>
       </div>
