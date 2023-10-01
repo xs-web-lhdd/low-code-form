@@ -531,3 +531,42 @@ const CountReducer: FC = () => {
 + 看 github star 和 npm 下载量
 + 看 github 代码更新,和 npm 发布频率
 + 看文档和 demo 是否通俗易懂
+
+# 优化
+## 优化代码体积
++ 分析代码体积 [Analyzing-the-bundle-size](https://create-react-app.dev/docs/analyzing-the-bundle-size)
+  + 安装 `npm install --save source-map-explorer`
+  + 添加脚本 
+      ```js
+          "scripts": {
+        +    "analyze": "source-map-explorer 'build/static/js/*.js'",
+             "start": "react-scripts start",
+             "build": "react-scripts build",
+             "test": "react-scripts test",
+          }
+      ```
+  + 执行命令
+      ```bash
+          npm run build
+          npm run analyze
+      ```
+
++ 路由懒加载，拆分 bundle，优化首页体积
+
+# 测试
++ 单元测试
+  + 针对一个一个独立的单元，而非整体
+  + 单元测试，某个模块、函数、组件，开发人员编写
+  + 系统测试，整个系统的功能流程，专业测试人员做
++ 自动化测试
++ 可视化测试
+> 1. 自动化测试非常重要（流程 + 工具，而非依赖人的主观）
+> 2. 前端，不是所有的组件都适合测试
+
+[jest](https://jestjs.cn/docs/getting-started)
+
+## 测试文件的位置
++ 选择1：统一放在 __test__ 目录下
++ 选择2：和源码文件放在一起，使用 .test.ts 后缀
++ 建议后者：可读性好，不容易忘记
+

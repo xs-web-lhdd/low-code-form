@@ -6,6 +6,6 @@ export type QuestionInfoPropsType = {
 }
 
 export const QuestionInfoDefaultProps: QuestionInfoPropsType = {
-  title: '输入框标题',
-  desc: '请输入描述',
+  title: '问卷标题',
+  desc: '问卷描述',
 }

@@ -27,6 +27,7 @@
     "react-router-dom": "^6.14.1",
     "react-scripts": "5.0.1",
     "sass": "^1.63.6",
+    "source-map-explorer": "^2.5.3",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -37,7 +38,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "eslintConfig": {
     "extends": [

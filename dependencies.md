@@ -140,3 +140,8 @@ module.exports = {
 
 ## qrcode.react
 + 二维码
+
+## 图表(React 中常见 Chart lib)
++ React-chartjs-2
++ [Recharts](https://recharts.org/zh-CN/)
++ ECharts-for-react
