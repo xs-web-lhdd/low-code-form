@@ -573,3 +573,49 @@ const CountReducer: FC = () => {
 ## 自动化测试
 1. 在 .husky 下的 pre-commit 添加 `npm run teat`
 2. 在 package.json 中将 scripts 中的 `"test": "craco test` 改为 `"test": "craco test --watchAll=false"`
+
+### 自动化测试的价值
++ commit 自动执行，失败无法提交代码（不污染现有代码）
++ 避免各种“不小心”的问题，不依赖人的主观
++ 要及时完善单元测试（配合代码走查 code review）
+
+## Storybook 可视化测试
++ [storybook官网](https://storybook.js.org/docs/react/get-started/install/)
++ 安装：`npx storybook@latest init`
++ 例子：在 stories 中新建文件夹 questionInfo ,新建 QuestionInfo.stories.tsx 里面代码如下
+```tsx
+import React from 'react'
+import type { Meta, StoryObj } from '@storybook/react'
+
+import Component from '../../components/QuestionComponents/QuestionInfo/Component'
+
+const meta = {
+  title: 'Question/QuestionInfo',
+  component: Component,
+} as Meta<typeof Component>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+// 默认属性
+export const Default: Story = {
+  args: {},
+}
+
+// 设置了属性
+export const SetProps: Story = {
+  args: {
+    title: 'hello',
+    desc: 'world',
+  },
+}
+
+// 换行
+export const DescBreakLine: Story = {
+  args: {
+    title: 'hello',
+    desc: 'a\nb\nc',
+  },
+}
+```
++ `npm run storybook` 执行测试
