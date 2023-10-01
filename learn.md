@@ -570,3 +570,6 @@ const CountReducer: FC = () => {
 + 选择2：和源码文件放在一起，使用 .test.ts 后缀
 + 建议后者：可读性好，不容易忘记
 
+## 自动化测试
+1. 在 .husky 下的 pre-commit 添加 `npm run teat`
+2. 在 package.json 中将 scripts 中的 `"test": "craco test` 改为 `"test": "craco test --watchAll=false"`
